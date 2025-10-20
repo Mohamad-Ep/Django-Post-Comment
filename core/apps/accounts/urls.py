@@ -4,8 +4,11 @@ from django.urls import path
 app_name = 'accounts'
 
 urlpatterns = [
-    # path("admin/", admin.site.urls),
-
+    path('register/', views.RegisterUserView.as_view(), name='register'),
+    path('login/', views.LoginUserView.as_view(), name='login'),
+    path('logout/', views.LogoutUserView.as_view(), name='logout'),
+	# Basic Auth for DRF
+	path("api-auth/", include("rest_framework.urls")),
 ]
 
 # _______________________________________________________
