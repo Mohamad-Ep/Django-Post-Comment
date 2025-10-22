@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +46,15 @@ INSTALLED_APPS = [
     "apps.accounts.apps.AccountsConfig",
     "apps.blog.apps.BlogConfig",
     "apps.comments.apps.CommentsConfig",
+    # packages
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'drf_yasg',
+    'mail_templated',
+    'djoser',
+    'corsheaders',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +148,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# _______________________________________________________________________________
+
+# Develop Email Settings - smtp4dev
+# ==================================
+if settings.DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    # Host for sending e-mail.
+    EMAIL_HOST = "smtp4dev"  # just for Development
+    # Port for sending e-mail.
+    EMAIL_PORT = 25
+    # Optional SMTP authentication information for EMAIL_HOST.
+    EMAIL_HOST_USER = ""
+    EMAIL_HOST_PASSWORD = ""
+    EMAIL_USE_TLS = False
+# _______________________________________________________________________________
