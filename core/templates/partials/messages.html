@@ -18,7 +18,7 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
-
+            
             {% for message in messages %}
                 {% if message.tags == 'success' %}
                     toastr.success("{{ message }}");
@@ -29,9 +29,9 @@
                 {% elif message.tags == 'info' %}
                     toastr.info("{{ message }}");
                 {% endif %}
-            {% endfor %}
-
-
+            {% endfor %}        
+            
+                
         });
 
     </script>

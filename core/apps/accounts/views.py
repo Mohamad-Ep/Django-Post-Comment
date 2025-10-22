@@ -29,7 +29,7 @@ class RegisterUserView(View):
                 )
                 messages.success(request, 'ثبت نام کاربر با موفقیت ایجاد شد')
                 return redirect('accounts:login')
-            messages.warning(request,'این کاربر وجود دارد')
+            messages.warning(request,'این کاربر قبلا ثبت نام کرده است')
             return render(request, self.template_name, {'form': form})
         for errors in form.errors.values():
             for error in errors:
