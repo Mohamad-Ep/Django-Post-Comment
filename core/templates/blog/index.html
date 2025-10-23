@@ -16,41 +16,8 @@
     </section>
 
     <div class="container py-5">
-        <h2 class="text-center mb-4">آخرین پست‌ها</h2>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="post">
-                    <div class="card-body">
-                        <h5 class="card-title">عنوان پست ۱</h5>
-                        <p class="card-text">توضیح کوتاه از پست...</p>
-                        <a href="post_detail.html" class="btn btn-outline-primary">مطالعه بیشتر</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="post">
-                    <div class="card-body">
-                        <h5 class="card-title">عنوان پست ۲</h5>
-                        <p class="card-text">توضیح کوتاه از پست...</p>
-                        <a href="post_detail.html" class="btn btn-outline-primary">مطالعه بیشتر</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="post">
-                    <div class="card-body">
-                        <h5 class="card-title">عنوان پست ۳</h5>
-                        <p class="card-text">توضیح کوتاه از پست...</p>
-                        <a href="post_detail.html" class="btn btn-outline-primary">مطالعه بیشتر</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="text-center mt-5">
-            <a href="posts.html" class="btn btn-primary btn-lg">مشاهده همه پست‌ها</a>
+        <div class="text-center mt-1">
+            <a href="{% url 'blog:posts' %}" class="btn btn-primary btn-lg">مشاهده همه پست‌ها</a>
         </div>
     </div>
 {% endblock content %}

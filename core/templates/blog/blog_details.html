@@ -1,0 +1,50 @@
+{% extends 'main_template.html' %}
+
+
+{% block title %}
+جزئیات
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container py-5">
+        <div class="card shadow-sm mb-5">
+            <img src="{{media_url}}{{post.image_name}}" style="width:500px;height:auto;margin:0 auto;padding:10px 0" class="card-img-top" alt="{{post.article_title}}">
+            <div class="card-body">
+                <h3 class="card-title">{{post.article_title}}</h3>
+                <p class="text-muted small">تاریخ ایجاد: {{post.published_date}}</p>
+                <p class="card-text">{{post.article_text}}</p>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-4">ارسال دیدگاه</h4>
+                
+                {% if user.is_authenticated %}
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">نام و نام خانوادگی</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">ایمیل</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">متن دیدگاه</label>
+                                <textarea class="form-control" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">ارسال دیدگاه</button>
+                    </form>   
+                    {% else %}
+                    <h4 class="text-danger m-auto">برای درج نظر باید ابتدا وارد شوید</h4>                 
+                {% endif %}
+                    
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

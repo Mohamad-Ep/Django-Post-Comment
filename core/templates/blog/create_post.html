@@ -1,0 +1,47 @@
+{% extends 'main_template.html' %}
+
+
+{% block title %}
+    ایجاد پست
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4 text-center">درج پست جدید</h3>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">عنوان پست</label>
+                                {{form.article_title}}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">توضیحات پست</label>
+                                {{form.article_text}}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">slug</label>
+                                {{form.slug}}
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label for="id_category">دسته بندی</label>
+                                    {{form.category}}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">آپلود تصویر</label>
+                                {{form.image_name}}
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">ذخیره پست</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
