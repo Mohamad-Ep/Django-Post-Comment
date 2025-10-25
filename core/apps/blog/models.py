@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from datetime import datetime
 import os
 from utils import get_random_code
+from django.dispatch import receiver
+from django.db.models.signals import pre_delete
 # _______________________________________________________
 
 class Category(models.Model):
@@ -42,4 +44,11 @@ class Article(models.Model):
     class Meta:
         verbose_name = "مقاله"
         verbose_name_plural = "مقاله ها"
+# _______________________________________________________
+
+@receiver(pre_delete, sender=Article)
+def delete_article_images(sender, instance, **kwargs):
+    """ Remove image_name field before delete article object"""
+    if instance.image_name and os.path.isfile(instance.image_name.path):
+        os.remove(instance.image_name.path)
 # _______________________________________________________
