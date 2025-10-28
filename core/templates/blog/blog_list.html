@@ -17,8 +17,8 @@
                         <img src="{{media_url}}{{post.image_name}}" class="card-img-top" alt="{{post.article_title}}">
                         <div class="card-body">
                             <h5 class="card-title">{{post.article_title}}</h5>
-                            <p class="card-text text-muted small">{{post.published_date}}</p>
-                            <p class="card-text">توضیح کوتاه از پست...</p>
+                            <p class="card-text text-muted small">تاریخ انتشار: {{post.published_date | date:"Y/m/d"}}</p>
+                            <p class="card-text">دسته بندی : {{post.category}}</p>
                             <a href="{% url 'blog:post-details' post.slug %}" class="btn btn-outline-primary">جزئیات</a>
                         </div>
                     </div>

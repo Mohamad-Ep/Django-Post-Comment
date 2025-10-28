@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'djoser',
     'corsheaders',
     'django_celery_beat',
+    "django_render_partial",
 ]
 
 MIDDLEWARE = [
@@ -176,6 +177,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',		# برای class_permissions
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",  # for api-docs
     "DEFAULT_FILTER_BACKENDS": [

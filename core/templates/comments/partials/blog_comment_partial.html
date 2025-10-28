@@ -1,0 +1,23 @@
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'comments:blog-comment' slug=article_slug %}">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">نام کامل</label>
+                        {{form.fullname}}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">ایمیل</label>
+                        {{form.email}}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">متن دیدگاه</label>
+                        {{form.text}}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">ارسال دیدگاه</button>
+            </form>   
+            {% else %}
+            <h4 class="text-danger m-auto">برای درج نظر باید ابتدا <a class="btn btn-primary text-decoration-none" href="{% url 'accounts:login' %}">وارد</a> شوید</h4>                 
+        {% endif %}  

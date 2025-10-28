@@ -10,6 +10,7 @@ from .forms import ArticleForm
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.views import View
+from apps.comments.models import BlogComment
 # _______________________________________________________
 
 def media_admin(request):
@@ -71,6 +72,15 @@ class PostDetailsView(DetailView):
     template_name = 'blog/blog_details.html'
     model = Article
     context_object_name = 'post'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        article = get_object_or_404(Article,slug=self.kwargs['slug'])
+        comments = BlogComment.objects.filter(is_active=True,article=article)\
+            .order_by("-published_date")
+        
+        context["comments"] = comments
+        return context    
 # _______________________________________________________
 
 class BlogView(View):

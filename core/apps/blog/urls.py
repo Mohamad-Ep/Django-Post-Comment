@@ -13,7 +13,7 @@ urlpatterns = [
     path("blog/", views.BlogView.as_view(), name='posts'),
     path("blog/<str:slug>/", views.PostDetailsView.as_view(), name='post-details'),
     # api-v1
-    path("api/v1/", include("apps.blog.api.v1.urls"), name='api-v1'),
+    path("blog/api/v1/", include("apps.blog.api.v1.urls"), name='api-v1'),
 ]
 
 # _______________________________________________________

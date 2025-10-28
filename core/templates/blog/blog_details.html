@@ -1,5 +1,5 @@
 {% extends 'main_template.html' %}
-
+{% load render_partial %}
 
 {% block title %}
 جزئیات
@@ -9,41 +9,40 @@
 {% block content %}
     <div class="container py-5">
         <div class="card shadow-sm mb-5">
-            <img src="{{media_url}}{{post.image_name}}" style="width:500px;height:auto;margin:0 auto;padding:10px 0" class="card-img-top" alt="{{post.article_title}}">
+            <img src="{{media_url}}{{post.image_name}}" style="width:500px;height:auto;margin:0 auto;padding:10px 0"
+                class="card-img-top" alt="{{post.article_title}}">
             <div class="card-body">
-                <h3 class="card-title">{{post.article_title}}</h3>
-                <p class="text-muted small">تاریخ ایجاد: {{post.published_date}}</p>
+                <h3 class="card-title">{{post.article_title}}</h3><br>
+                <p class="text-muted small">تاریخ ایجاد: <strong>{{post.published_date | date:"Y/m/d"}}</strong></p>
+                <p class="text-muted small">دسته بندی : <strong>{{post.category}}</strong></p>
                 <p class="card-text">{{post.article_text}}</p>
             </div>
         </div>
-
+        
+        <!-- Comment List -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-4">دیدگاه‌ها</h4>                
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="d-flex mb-4">
+                            <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="user" class="rounded-circle me-3 mx-3"
+                                width="60" height="60">
+                            <div>
+                                <h6 class="mb-2 fw-bold">{{comment.fullname}}</h6>
+                                <p class="mb-0">{{comment.comment_text}}</p>
+                            </div>
+                        </div>                    
+                    {% endfor %}  
+                    {% else %}
+                    <h3 class="text-secondary text-center">دیدگاه برای این پست درج نشده است.</h3>                     
+                {% endif %}                                                     
+            </div>
+        </div>
         <div class="card shadow-sm">
             <div class="card-body">
                 <h4 class="mb-4">ارسال دیدگاه</h4>
-                
-                {% if user.is_authenticated %}
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">نام و نام خانوادگی</label>
-                                <input type="text" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">ایمیل</label>
-                                <input type="email" class="form-control" required>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">متن دیدگاه</label>
-                                <textarea class="form-control" rows="4" required></textarea>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3">ارسال دیدگاه</button>
-                    </form>   
-                    {% else %}
-                    <h4 class="text-danger m-auto">برای درج نظر باید ابتدا وارد شوید</h4>                 
-                {% endif %}
-                    
-
+                {% render_partial 'comments:blog-comment' slug=post.slug %}
             </div>
         </div>
     </div>
