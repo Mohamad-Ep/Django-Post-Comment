@@ -5,9 +5,15 @@ from django.contrib import messages
 from .models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 # _______________________________________________________
 
+
 class RegisterUserView(View):
+    """
+    Registration of the user and registration of the initial account information
+    """
+
     template_name = 'accounts/register.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -29,16 +35,22 @@ class RegisterUserView(View):
                 )
                 messages.success(request, 'ثبت نام کاربر با موفقیت ایجاد شد')
                 return redirect('accounts:login')
-            messages.warning(request,'این کاربر قبلا ثبت نام کرده است')
+            messages.warning(request, 'این کاربر قبلا ثبت نام کرده است')
             return render(request, self.template_name, {'form': form})
         for errors in form.errors.values():
             for error in errors:
                 messages.error(request, error)
             return render(request, self.template_name, {'form': form})
 
+
 # _______________________________________________________
 
+
 class LoginUserView(View):
+    """
+    User login and authentication class
+    """
+
     template_name = 'accounts/login.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -75,11 +87,14 @@ class LoginUserView(View):
                     messages.error(request, error)
                 return render(request, self.template_name, {'form': form})
 
+
 # ________________________________________________
+
 
 class LogoutUserView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect('blog:index')
+
 
 # ________________________________________________

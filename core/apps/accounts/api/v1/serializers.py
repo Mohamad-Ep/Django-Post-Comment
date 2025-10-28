@@ -1,11 +1,13 @@
 from rest_framework import serializers
-from ...models import CustomUser,Profile
+from ...models import CustomUser, Profile
 import re
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+
 # _______________________________________________________
+
 
 class RegisterationSerializer(serializers.ModelSerializer):
     re_password = serializers.CharField(max_length=128)
@@ -13,7 +15,7 @@ class RegisterationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["email", "password", "re_password"]
-        
+
     def validate(self, attrs):
         password = attrs.get('password')
         re_password = attrs.get('re_password')
@@ -43,12 +45,14 @@ class RegisterationSerializer(serializers.ModelSerializer):
                 'Password must have at least one specific character (@#$%!^&*)'
             )
         return super().validate(attrs)
-    
+
     def create(self, validated_data):
         validated_data.pop("re_password", None)
         return CustomUser.objects.create_user(**validated_data)
-    
+
+
 # _______________________________________________________
+
 
 class ResendActivationSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
@@ -69,7 +73,9 @@ class ResendActivationSerializer(serializers.Serializer):
 
         return super().validate(attrs)
 
+
 # _______________________________________________________
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
@@ -80,31 +86,31 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["email"] = self.user.email
         data["user_id"] = self.user.id
         return data
+
+
 # _______________________________________________________
 
+
 class CustomAuthTokenSerializer(serializers.Serializer):
-    email = serializers.EmailField(
-        label=_("Email"),
-        write_only=True
-    )
+    email = serializers.EmailField(label=_("Email"), write_only=True)
     password = serializers.CharField(
         label=_("Password"),
         style={'input_type': 'password'},
         trim_whitespace=False,
-        write_only=True
+        write_only=True,
     )
-    token = serializers.CharField(
-        label=_("Token"),
-        read_only=True
-    )
+    token = serializers.CharField(label=_("Token"), read_only=True)
 
     def validate(self, attrs):
         username = attrs.get('email')
         password = attrs.get('password')
 
         if username and password:
-            user = authenticate(request=self.context.get('request'),
-                                username=username, password=password)
+            user = authenticate(
+                request=self.context.get('request'),
+                username=username,
+                password=password,
+            )
 
             # The authenticate call simply returns None for is_active=False
             # users. (Assuming the default ModelBackend authentication
@@ -114,20 +120,23 @@ class CustomAuthTokenSerializer(serializers.Serializer):
                 raise serializers.ValidationError(msg, code='authorization')
             if not user.is_verified:
                 msg = _('User is not Verified')
-                raise serializers.ValidationError(msg, code='authorization')            
+                raise serializers.ValidationError(msg, code='authorization')
         else:
             msg = _('Must include "username" and "password".')
             raise serializers.ValidationError(msg, code='authorization')
 
         attrs['user'] = user
         return attrs
+
+
 # _______________________________________________________
 
+
 class ChangePasswordSerilalizer(serializers.Serializer):
-    old_password = serializers.CharField(write_only=True,label=_("old_password"))
-    new_password = serializers.CharField(write_only=True,label=_("new_password"))
-    re_password = serializers.CharField(write_only=True,label=_("re_password"))
-    
+    old_password = serializers.CharField(write_only=True, label=_("old_password"))
+    new_password = serializers.CharField(write_only=True, label=_("new_password"))
+    re_password = serializers.CharField(write_only=True, label=_("re_password"))
+
     def validate(self, attrs):
         password = attrs.get("new_password")
         re_password = attrs.get("re_password")
@@ -155,13 +164,15 @@ class ChangePasswordSerilalizer(serializers.Serializer):
             raise serializers.ValidationError(
                 'Password must have at least one specific character (@#$%!^&*)'
             )
-        
+
         return super().validate(attrs)
+
 
 # _______________________________________________________
 
+
 class ResetPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True,write_only=True)
+    email = serializers.EmailField(required=True, write_only=True)
 
     def validate(self, attrs):
         email = attrs.get("email")
@@ -171,19 +182,24 @@ class ResetPasswordSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     {"details": "The user is not active or verified"}
                 )
-            
+
         except CustomUser.DoesNotExist:
-            raise serializers.ValidationError({"email": "There is no user with this email."})
+            raise serializers.ValidationError(
+                {"email": "There is no user with this email."}
+            )
 
         attrs["user"] = user_obj
 
         return super().validate(attrs)
+
+
 # _______________________________________________________
 
+
 class ResetPasswordConfirmSerializer(serializers.Serializer):
-    new_password = serializers.CharField(write_only=True,label=_("new_password"))
-    re_password = serializers.CharField(write_only=True,label=_("re_password"))
-    
+    new_password = serializers.CharField(write_only=True, label=_("new_password"))
+    re_password = serializers.CharField(write_only=True, label=_("re_password"))
+
     def validate(self, attrs):
         password = attrs.get("new_password")
         re_password = attrs.get("re_password")
@@ -211,13 +227,19 @@ class ResetPasswordConfirmSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 'Password must have at least one specific character (@#$%!^&*)'
             )
-        
+
         return super().validate(attrs)
+
+
 # _______________________________________________________
 
+
 class ProfileDetailsSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(read_only=True,source='user.email')
+    email = serializers.EmailField(read_only=True, source='user.email')
+
     class Meta:
         model = Profile
         fields = '__all__'
+
+
 # _______________________________________________________

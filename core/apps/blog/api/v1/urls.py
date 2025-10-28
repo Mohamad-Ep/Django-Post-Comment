@@ -1,5 +1,6 @@
-from django.urls import path,include
+from django.urls import path, include
 from apps.blog.api.v1 import views as views
+
 # _______________________________________________________
 
 app_name = 'api-v1'

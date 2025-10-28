@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import CustomUser,Profile
+from .models import CustomUser, Profile
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
+
 # _______________________________________________________
+
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
@@ -30,9 +32,9 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
-    
+
     list_display = ("email", "is_verified", "is_admin", "is_active")
-    list_filter = ("email","is_active")
+    list_filter = ("email", "is_active")
     search_fields = ("email",)
     ordering = ("created_date",)
     list_editable = ("is_active",)
@@ -41,13 +43,16 @@ class CustomUserAdmin(UserAdmin):
         "user_permissions",
     )
 
-admin.site.register(CustomUser,CustomUserAdmin)
+
+admin.site.register(CustomUser, CustomUserAdmin)
 # _______________________________________________________
 
+
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user','name','family','mobile_number','created_date')
+    list_display = ('user', 'name', 'family', 'mobile_number', 'created_date')
     list_filter = ('mobile_number',)
     search_fields = ('family',)
-    
-admin.site.register(Profile,ProfileAdmin)
+
+
+admin.site.register(Profile, ProfileAdmin)
 # _______________________________________________________

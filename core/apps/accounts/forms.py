@@ -1,6 +1,8 @@
 from django import forms
 import re
+
 # ________________________________________________
+
 
 class RegisterUserForm(forms.Form):
     email = forms.EmailField(
@@ -56,7 +58,10 @@ class RegisterUserForm(forms.Form):
             )
 
         return pass2
+
+
 # ________________________________________________
+
 
 class LoginUserForm(forms.Form):
     email = forms.EmailField(
@@ -89,4 +94,6 @@ class LoginUserForm(forms.Form):
             raise forms.ValidationError('رمز عبور نباید کمتر از 8 کاراکتر باشد')
 
         return pass1
+
+
 # ________________________________________________
