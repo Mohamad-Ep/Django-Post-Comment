@@ -64,13 +64,13 @@ class PostDetailsApiView(generics.RetrieveUpdateDestroyAPIView):
         ser_data = self.get_serializer(instance=self.get_object())
         return Response(data=ser_data.data, status=status.HTTP_200_OK)
 
-    def update(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         ser_data = self.get_serializer(instance=self.get_object(), data=request.data)
         ser_data.is_valid(raise_exception=True)
         ser_data.save()
         return Response(data=ser_data.data, status=status.HTTP_200_OK)
 
-    def partial_update(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         ser_data = self.get_serializer(
             instance=self.get_object(), data=request.data, partial=True
         )

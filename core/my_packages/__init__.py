@@ -98,6 +98,10 @@ from django.db.models.signals import post_migrate, post_save, pre_save, pre_dele
 from django.test import TestCase, SimpleTestCase, Client
 import pytest
 from rest_framework.test import APIClient
+from django.core.files.uploadedfile import SimpleUploadedFile
+from unittest.mock import patch
+import shutil
+from django.test import override_settings
 
 # Class Base View
 from django.views import View
