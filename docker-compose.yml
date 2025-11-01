@@ -35,33 +35,33 @@ services:
             - ./envs/dev/.env
         restart: always
 
-    # worker-celery:
-    #     container_name: worker-celery33
-    #     build:
-    #       context: .
-    #       dockerfile: ./dockerfiles/Dockerfile
-    #     volumes:
-    #         - ./core:/srv/app
-    #     command: celery -A core worker --loglevel=info
-    #     depends_on:
-    #         - redis
-    #         - backend
-    #     env_file:
-    #         - ./envs/dev/.env
+    worker-celery:
+        container_name: worker-celery33
+        build:
+          context: .
+          dockerfile: ./dockerfiles/Dockerfile
+        volumes:
+            - ./core:/srv/app
+        command: celery -A core worker --loglevel=info
+        depends_on:
+            - redis
+            - backend
+        env_file:
+            - ./envs/dev/.env
 
-    # beat-celery:
-    #     container_name: beat-celery33
-    #     build:
-    #       context: .
-    #       dockerfile: ./dockerfiles/Dockerfile
-    #     volumes:
-    #     - ./core:/srv/app
-    #     command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
-    #     depends_on:
-    #     - redis
-    #     - backend
-    #     env_file:
-    #         - ./envs/dev/.env
+    beat-celery:
+        container_name: beat-celery33
+        build:
+          context: .
+          dockerfile: ./dockerfiles/Dockerfile
+        volumes:
+        - ./core:/srv/app
+        command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+        depends_on:
+        - redis
+        - backend
+        env_file:
+            - ./envs/dev/.env
 
     smtp4dev:
         image: rnwood/smtp4dev:v3
