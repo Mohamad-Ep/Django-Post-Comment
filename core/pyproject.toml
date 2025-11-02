@@ -1,0 +1,28 @@
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311', 'py312']
+skip-string-normalization = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | __pycache__
+  | venv
+  | migrations
+  | static
+  | media
+  | \.mypy_cache
+  | \.pytest_cache
+  | manage\.py
+  | \.gitignore
+  | .*\.pot
+  | .*\.py[co]
+  | \.env
+  | settings\.py
+  | __init__\.py
+  | insert_data\.py
+  | modules
+  | staticfiles
+  | tests
+)/
+'''

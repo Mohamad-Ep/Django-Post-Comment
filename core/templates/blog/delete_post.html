@@ -1,0 +1,29 @@
+{% extends 'main_template.html' %}
+
+
+{% block title %}
+حذف پست
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-danger">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="card-body text-center">
+                            <h4 class="text-danger mb-3">آیا از حذف این پست مطمئن هستید؟</h4>
+                            <p>عنوان پست: <strong>{{post.article_title}}</strong></p>
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+                                <a href="{% url 'blog:post-list' %}" class="btn btn-secondary">انصراف</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

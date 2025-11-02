@@ -1,0 +1,55 @@
+{% extends 'main_template.html' %}
+
+
+{% block title %}
+لیست پست ها
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container py-5">
+        <h3 class="mb-4 text-center">پست‌های من</h3>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <a href="{% url 'blog:create-post' %}" class="btn btn-primary btn-sm my-3">+ پست جدید</a>
+                <thead>
+                    <tr>
+                        <th>عنوان پست</th>
+                        <th>تاریخ انتشار</th>
+                        <th>وضعیت</th>
+                        <th>نویسنده</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for post in posts %}
+                        <tr>
+                            <td>{{post.article_title}}</td>
+                            <td>{{post.published_date}}</td>
+                            <td>
+                                
+                                {% if post.is_active %}
+                                    فعال
+                                    {% else %}
+                                    غیرفعال
+                                {% endif %}
+                                    
+                            </td>
+                            <td>
+                                {{post.author}}
+                            </td>
+                            <td>
+                                <a href="{% url 'blog:post-details' post.slug %}" class="btn btn-sm btn-info">جزئیات</a>
+                                <a href="{% url 'blog:update-post' post.slug %}" class="btn btn-sm btn-success">ویرایش</a>
+                                <a href="{% url 'blog:delete-post' post.slug %}" class="btn btn-sm btn-danger">حذف</a>
+                            </td>
+                        </tr>                        
+                    {% endfor %}
+                        
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

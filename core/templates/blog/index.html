@@ -1,0 +1,23 @@
+{% extends 'main_template.html' %}
+
+
+{% block title %}
+    صفحه اول
+{% endblock title %}
+
+
+{% block content %}
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content container">
+            <h1 class="display-5 fw-bold mb-3">به وبلاگ ما خوش آمدید</h1>
+            <p class="lead mb-4">مطالب جذاب و آموزشی در زمینه برنامه‌نویسی، تکنولوژی و دنیای دیجیتال</p>
+        </div>
+    </section>
+
+    <div class="container py-5">
+        <div class="text-center mt-1">
+            <a href="{% url 'blog:posts' %}" class="btn btn-primary btn-lg">مشاهده همه پست‌ها</a>
+        </div>
+    </div>
+{% endblock content %}
