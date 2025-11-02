@@ -11,6 +11,9 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.views import View
 from apps.comments.models import BlogComment
+from django.core.cache import cache
+from django.dispatch import receiver
+from django.db.models.signals import post_save, post_delete
 
 # _______________________________________________________
 
@@ -136,8 +139,27 @@ class BlogView(View):
     template_name = 'blog/blog_list.html'
 
     def get(self, request, *args, **kwargs):
-        posts = Article.objects.filter(is_active=True).order_by('-published_date')
-        return render(request, self.template_name, {"posts": posts})
+        """
+        Caching the article data for 10 minutes
+        """
+        cache_key = "articles"
+        data = cache.get(cache_key)
+        if not data:
+            posts = Article.objects.filter(is_active=True).order_by('-published_date')
+            cache.set(cache_key, posts, timeout=10 * 60)
+            data = posts
+        return render(request, self.template_name, {"posts": data})
+
+
+# _______________________________________________________
+
+
+@receiver([post_save, post_delete], sender=Article)
+def clear_product_cache(sender, **kwargs):
+    """
+    Deleting the cache of articles when it is created or deleted
+    """
+    cache.delete("articles")
 
 
 # _______________________________________________________

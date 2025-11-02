@@ -1,6 +1,8 @@
 from celery import shared_task
 from .models import Article
+
 # _______________________________________________________
+
 
 @shared_task
 def get_send_email():
@@ -8,4 +10,6 @@ def get_send_email():
     if artilce.exists():
         artilce.delete()
         print(f"Inactive articles removed...")
+
+
 # _______________________________________________________

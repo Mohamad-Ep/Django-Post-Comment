@@ -1,5 +1,7 @@
 from locust import HttpUser, task
+
 # _______________________________________________________
+
 
 class QuickstartUser(HttpUser):
     def on_start(self):
@@ -21,4 +23,6 @@ class QuickstartUser(HttpUser):
     @task
     def get_comment_list(self):
         self.client.get("/comments/api/v1/comment-list/")
+
+
 # _______________________________________________________
