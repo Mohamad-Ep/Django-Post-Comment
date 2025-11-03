@@ -14,7 +14,3 @@ RUN pip install --upgrade pip
 # Install Dependencies
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-
-# Allow Permissions
-COPY entrypoint.sh .
-RUN chmod +x ./entrypoint.sh
