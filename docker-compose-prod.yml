@@ -1,0 +1,107 @@
+version: "3.9"
+
+services:
+    backend:
+        container_name: blog-app33
+        build:
+          context: .
+          dockerfile: ./dockerfiles/Dockerfile
+        volumes:
+            - ./core:/srv/app
+            - ./core/media:/srv/app/media
+            - static_volume33:/srv/app/static
+            - media_volume33:/srv/app/media
+        ports:
+            - "8000:8000"        
+        command: sh ./entrypoint.sh
+        depends_on:
+            db:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        env_file:
+            - ./envs/prod/.env
+    
+    db:
+        container_name: pg-db33
+        image: postgres:15-alpine
+        volumes:
+            - postgres_data33:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        env_file:
+            - ./envs/prod/.env
+        restart: always
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+
+    redis:
+        image: redis:latest
+        restart: always
+        container_name: redis33
+        ports:
+            - "6379:6379"
+        command: redis-server --save 60 1 --loglevel warning
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 5s
+
+    worker-celery:
+        container_name: worker-celery33
+        build:
+          context: .
+          dockerfile: ./dockerfiles/Dockerfile
+        volumes:
+            - ./core:/srv/app
+        command: celery -A core worker --loglevel=info
+        depends_on:
+            redis:
+                condition: service_healthy
+            backend:
+                condition: service_started
+        env_file:
+          - ./envs/prod/.env
+
+    beat-celery:
+        container_name: beat-celery33
+        build:
+          context: .
+          dockerfile: ./dockerfiles/Dockerfile
+        volumes:
+            - ./core:/srv/app
+        command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+        depends_on:
+            redis:
+                condition: service_healthy
+            backend:
+                condition: service_started
+        env_file:
+            - ./envs/prod/.env
+    
+    nginx:
+        container_name: nginx33
+        image: nginx
+        restart: always
+        ports: 
+            - "80:80"
+        depends_on:
+            redis:
+                condition: service_healthy
+            backend:
+                condition: service_started
+        volumes:
+            - ./default.conf:/etc/nginx/conf.d/default.conf
+            - static_volume33:/srv/app/static
+            - media_volume33:/srv/app/media
+
+volumes:
+  static_volume33:
+  media_volume33:
+  postgres_data33:

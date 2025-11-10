@@ -1,0 +1,41 @@
+name: Django-Post-Commet Docker Image
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Docker Compose
+      run: docker compose up -d
+    - name: Wait for containers to be ready
+      run: sleep 10
+    - name: Run Testing Project
+      run: docker compose exec -T backend sh -c "flake8 && pytest"
+
+
+  Deploy:
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }} 
+    name: Deploy
+    needs: Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Connect and Execute Commands
+      uses: appleboy/ssh-action@master
+      with:
+        username: ${{secrets.VPS_USERNAME}}
+        password: ${{secrets.VPS_PASSWORD}}
+        host: ${{secrets.VPS_HOST}}
+        port: ${{secrets.VPS_PORT}}
+        script: |
+          cd ${{secrets.PROJECT_PATH}}
+          docker compose -f docker-compose-prod.yml stop
+          git pull
+          docker compose -f docker-compose-prod.yml restart
